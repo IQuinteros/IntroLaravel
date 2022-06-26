@@ -21,6 +21,8 @@
     </div><br />
   @endif
 
+  <a href="{{ route('clients.create')}}">IR A CREAR CLIENTE</a>
+
   <table class="table table-striped">
     <thead>
         <tr>

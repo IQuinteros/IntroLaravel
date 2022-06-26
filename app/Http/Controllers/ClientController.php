@@ -36,11 +36,13 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        Client::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone
+        $dataValidada = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'email|required',
+            'phone' => 'required|numeric'
         ]);
+
+        Client::create($dataValidada);
 
         return redirect('/clients')->with('resultado', 'Cliente ha sido agregado exitósamente');
     }
@@ -53,7 +55,8 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        $client = Client::findOrFail($id);
+        return view('clients.show', compact('client'));
     }
 
     /**
@@ -64,7 +67,8 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        //
+        $client = Client::findOrFail($id);
+        return view('clients.edit', compact('client'));
     }
 
     /**
@@ -76,7 +80,15 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $dataValidada = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'email|required',
+            'phone' => 'required|numeric'
+        ]);
+
+        Client::whereId($id)->update($dataValidada);
+
+        return redirect('/clients')->with('resultado', 'El cliente ha sido editado exitósamente');
     }
 
     /**
